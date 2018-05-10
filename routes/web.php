@@ -14,3 +14,22 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/2fa','PasswordSecurityController@show2faForm')->name('2fa');
+Route::post('/generate2faSecret','PasswordSecurityController@generate2faSecret')->name('generate2faSecret');
+Route::post('/2fa','PasswordSecurityController@enable2fa')->name('enable2fa');
+Route::post('/disable2fa','PasswordSecurityController@disable2fa')->name('disable2fa');
+Route::post('/2faVerify', function () {
+    return redirect(URL()->previous());
+})->name('2faVerify')->middleware('2fa');
+
+Route::get('vaults', 'VaultsController@index')->name('vaults');
+
+
+// Route::group(['middleware' => ['auth','2fa']], function () {
+//   Route::get('vaults', 'VaultsController@index');
+// });
